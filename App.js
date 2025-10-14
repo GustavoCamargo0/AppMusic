@@ -1,21 +1,15 @@
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
+import Search from './Search';
+
 
 export default function App() {
+
+  const [pesquisa, setPesquisa] = useState('')
+
   return (
-    <View style={styles.container}>
-      <Text>App Music</Text>
-      <TextInput
-        style={styles.input}
-        placeholder='Pesquise Suas musicas e Artistas'
-        value={}
-        onChangeText={}
-        keyboardType='default'
-      />
-
-
-      <StatusBar style="auto" />
-    </View>
+      <Search />
   );
 }
 
@@ -26,4 +20,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  pesquisa: {
+    height: 60,
+  },
+  input: {
+    backgroundColor: 'gray',
+    padding: 5,
+    flex: 1,
+  }
 });
