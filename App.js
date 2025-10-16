@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import Search from './Search';
 
 
 export default function App() {
-
-  const [pesquisa, setPesquisa] = useState('')
-
   return (
       <Search />
   );

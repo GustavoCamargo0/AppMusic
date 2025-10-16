@@ -1,79 +1,64 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TextInput, StyleSheet, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, FlatList } from 'react-native';
 
-export default function MusicSearch() {
-  const [query, setQuery] = useState('');
+export default function Search() {
+  const [pesquisa, setPesquisa] = useState('')
   const [tracks, setTracks] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (query.length > 2) {
-      setLoading(true);
-      fetch(`https://api.deezer.com/search/track?q=${query}`)
+    if (pesquisa.length > 2) {
+      fetch(`https://api.deezer.com/search/track?q=${pesquisa}`)
         .then(res => res.json())
         .then(data => {
-          setTracks(data.data);
-          setLoading(false);
+          setTracks(data.data)
         })
-        .catch(err => {
-          console.error(err);
-          setLoading(false);
-        });
     } else {
-      setTracks([]);
+      setTracks([])
     }
-  }, [query]);
-
+  }, [pesquisa])
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>App Music</Text>
       <TextInput
-        placeholder="Buscar músicas..."
-        value={query}
-        onChangeText={setQuery}
         style={styles.input}
+        placeholder='Pesquisar música...'
+        value={pesquisa}
+        onChangeText={setPesquisa}
+        keyboardType='default'
       />
-
-      {loading && <Text>Carregando...</Text>}
 
       <FlatList
         data={tracks}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.trackItem}>
-            <Image source={{ uri: item.album.cover_small }} style={styles.cover} />
-            <View style={{ flex: 1, marginLeft: 10 }}>
-              <Text style={styles.trackTitle}>{item.title}</Text>
-              <Text style={styles.artistName}>{item.artist.name}</Text>
-              <Text style={styles.albumName}>{item.album.title}</Text>
-            </View>
+          <View style={{ padding: 10, borderWidth: 1, margin: 5, borderColor: 'black', height: 80, width: 300, textAlign: 'center', justifyContent: 'center', alignItems: 'center', }}>
+            <Text style={styles.title}>{item.title}</Text>
           </View>
-        )}
-      />
+        )} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: { padding: 20, flex: 1, backgroundColor: '#fff' },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   input: {
-    height: 40,
-    borderColor: 'gray',
+    padding: 5,
+    borderColor: 'black',
     borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+    margin: 20,
   },
-  trackItem: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    flex: 1,
   },
-  cover: {
-    width: 50,
-    height: 50,
-  },
-  trackTitle: { fontSize: 16, fontWeight: 'bold' },
-  artistName: { color: 'gray' },
-  albumName: { color: 'darkgray' },
+  text: {
+    fontSize: 16,
+    color: 'black',
+  }
 });
