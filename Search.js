@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, FlatList, Image, TouchableOpacity } from 'react-native';
-import { FontAwesome6 } from '@expo/vector-icons';
+import { View, Text, FlatList, TextInput, StyleSheet, Image } from 'react-native';
 
 export default function Search() {
   const [pesquisa, setPesquisa] = useState('')
@@ -16,7 +15,7 @@ export default function Search() {
     } else {
       setTracks([])
     }
-  }, [pesquisa]);
+  }, [query]);
 
   return (
     <View style={styles.container}>
@@ -33,18 +32,14 @@ export default function Search() {
         data={tracks}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
-            <View style={{ borderWidth: 1, margin: 5, borderColor: 'black', height: 80, width: 300, color: 'white' }}>
-              <View style={styles.row}>
-                <Image
-                  source={{ uri: item.album.cover }}
-                  style={{ height: 50, width: 50, margin: 7 }}
-                />
-                <View style={styles.collum}>
-                  <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.text}>{item.artist.name}</Text>
-                </View>
-              </View>
+          <View style={styles.trackItem}>
+            <Image source={{ uri: item.album.cover_small }} style={styles.cover} />
+            <View style={{ flex: 1, marginLeft: 10 }}>
+              <Text style={styles.trackTitle}>{item.title}</Text>
+              <Text style={styles.artistName}>{item.artist.name}</Text>
+              <Text style={styles.albumName}>{item.album.title}</Text>
             </View>
+          </View>
         )}
       />
     </View>
@@ -52,34 +47,26 @@ export default function Search() {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000000',
-    color: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  container: { padding: 20, flex: 1, backgroundColor: '#fff' },
   input: {
     height: 40,
-    padding: 2,
-    backgroundColor: 'gray',
-    margin: 20,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 10,
     borderRadius: 5,
-  
   },
-  title: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+  trackItem: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
   },
-  text: {
-    fontSize: 12,
-    color: 'white',
+  cover: {
+    width: 50,
+    height: 50,
   },
-  row: {
-    flexDirection: 'row'
-  },
-  collum: {
-    flexDirection: 'column'
-  }
+  trackTitle: { fontSize: 16, fontWeight: 'bold' },
+  artistName: { color: 'gray' },
+  albumName: { color: 'darkgray' },
 });
