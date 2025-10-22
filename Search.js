@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, FlatList, Image, TouchableOpacity } from 'react-native';
-import { FontAwesome6 } from '@expo/vector-icons';
 
-export default function Search() {
+export default function Search({ navigation }) {
   const [pesquisa, setPesquisa] = useState('')
   const [tracks, setTracks] = useState([]);
 
@@ -54,7 +53,7 @@ export default function Search() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#B0B0B0',
     color: 'white',
     alignItems: 'center',
     justifyContent: 'center',
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     padding: 2,
-    backgroundColor: 'gray',
+    backgroundColor: '#F5F5F5',
     margin: 20,
     borderRadius: 5,
   
