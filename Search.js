@@ -1,9 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, FlatList, Image, TouchableOpacity } from 'react-native';
+import { Audio } from 'expo-av';
 
 export default function Search({ navigation }) {
-  const [pesquisa, setPesquisa] = useState('')
+  const [pesquisa, setPesquisa] = useState('');
   const [tracks, setTracks] = useState([]);
+  const [sound, setSound] = useState(null);
+  const [playingTrackId, setPlayingTrackId] = useState(null);
+
+  const playSound = async (previewUrl, trackId) => {
+    try {
+
+      if (sound) {
+        await sound.unloadAsync();
+      }
+
+      if (playingTrackId === trackId) {
+        setPlayingTrackId(null);
+        setSound(null);
+        return;
+      }
+
+
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        { uri: previewUrl },
+        { shouldPlay: true }
+      );
+      
+      setSound(newSound);
+      setPlayingTrackId(trackId);
+
+      newSound.setOnPlaybackStatusUpdate((status) => {
+        if (status.didJustFinish) {
+          setPlayingTrackId(null);
+        }
+      });
+    } catch (error) {
+      console.error('Error playing sound:', error);
+    }
+  };
 
   useEffect(() => {
     if (pesquisa.length > 2) {
@@ -16,6 +51,14 @@ export default function Search({ navigation }) {
       setTracks([])
     }
   }, [pesquisa]);
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
   return (
     <View style={styles.container}>
@@ -32,7 +75,10 @@ export default function Search({ navigation }) {
         data={tracks}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
-            <View style={{ borderWidth: 1, margin: 5, borderColor: 'black', height: 80, width: 300, color: 'white' }}>
+            <TouchableOpacity 
+              style={{ borderWidth: 1, margin: 5, borderColor: 'black', height: 80, width: 300, color: 'white' }}
+              onPress={() => playSound(item.preview, item.id)}
+            >
               <View style={styles.row}>
                 <Image
                   source={{ uri: item.album.cover }}
@@ -41,9 +87,12 @@ export default function Search({ navigation }) {
                 <View style={styles.collum}>
                   <Text style={styles.title}>{item.title}</Text>
                   <Text style={styles.text}>{item.artist.name}</Text>
+                  <Text style={[styles.text, { color: playingTrackId === item.id ? '#4CAF50' : 'white' }]}>
+                    {playingTrackId === item.id ? 'Tocando...' : 'Toque para ouvir'}
+                  </Text>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
         )}
       />
     </View>
