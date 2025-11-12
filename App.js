@@ -2,17 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Search from './Search';
-import Home from './Home';
+import {FontAwesome, AntDesign } from '@expo/vector-icons';
+import Search from './screens/Search';
+import Home from './screens/Home';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Search" component={Search} />
+      <Tab.Navigator
+         screenOptions={{
+        tabBarActiveTintColor: '#353839',
+        tabBarInactiveTintColor: 'black',
+        headerStyle: { backgroundColor: '#353839' },
+        headerTitleStyle: { color: 'white' },
+        tabBarStyle: { backgroundColor: '#353839' }
+      }}>
+        <Tab.Screen name="Home" component={Home} 
+           options={{
+          tabBarLabel: '',
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="home" size={size} color={'white'} />
+          ),
+        }}/>
+        <Tab.Screen name="Search" component={Search} 
+            options={{
+          tabBarLabel: '',
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="search" size={size} color={'white'} />
+          ),
+        }}/>
       </Tab.Navigator>
     </NavigationContainer>
   );

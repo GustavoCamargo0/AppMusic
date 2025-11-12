@@ -76,7 +76,7 @@ export default function Search({ navigation }) {
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
             <TouchableOpacity 
-              style={{ borderWidth: 1, margin: 5, borderColor: 'black', height: 80, width: 300, color: 'white' }}
+              style={{ margin: 5, height: 80, width: 300, color: 'white' }}
               onPress={() => playSound(item.preview, item.id)}
             >
               <View style={styles.row}>
@@ -102,7 +102,7 @@ export default function Search({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#B0B0B0',
+    backgroundColor: '#414A4C',
     color: 'white',
     alignItems: 'center',
     justifyContent: 'center',
